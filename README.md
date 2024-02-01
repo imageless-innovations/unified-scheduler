@@ -4,13 +4,14 @@ Single solution for scheduling Rooms, Equipment for Checkout, and Equipment loca
 ## Organization Planning (DRAFT)
 
 ```
-Home Page/
-  ├── /Main Menu
+HOME PAGE/
   │   ├── Landing Page :  Boxed Images that link descriptions for each service area below
   │   |  ├── Unified Announcement Pages
   │   |  ├── Unified Event Page
   │   |  ├── Unified Gallery
   │   |  ├── Description Page with Contact Information.
+
+SIDE MENU/
   |   ├── Reserve a Room (Service Area)/
   │   |  ├── For each room, a boxed image that allows reservation to be made, view calendar of reservations and availability, link to description of the room /
   │   |  ├── Announcements
@@ -38,11 +39,5 @@ Home Page/
 
         ... allow for multiple Labs to be created, each independent of the others. 
 
-  │   ├── routes/
-  ├── templates
-  ├── .env
-  ├── package.json
-  ├── README.md
-  └── 
 /* We will want to allow for Global Announcements
  
