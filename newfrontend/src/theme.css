@@ -1,0 +1,36 @@
+/* theme.css */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --text-color: #333;
+    --background-color: #f0f0f0;
+  
+    --font-family: 'Arial', sans-serif;
+    --font-size-h1: 2rem;
+    --font-size-paragraph: 1rem;
+  
+    --font-weight-bold: 700;
+    --font-weight-normal: 400;
+  
+    --width-container: 80%; /* Adjust as needed */
+  }
+  
+  /* global.css */
+  body {
+    font-family: var(--font-family);
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    font-size: var(--font-size-h1);
+    color: var(--primary-color);
+    font-weight: var(--font-weight-bold);
+  }
+  
+  p {
+    font-size: var(--font-size-paragraph);
+    color: var(--text-color);
+    font-weight: var(--font-weight-normal);
+  }
+  
