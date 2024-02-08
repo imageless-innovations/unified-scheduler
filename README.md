@@ -13,7 +13,8 @@ HOME PAGE/
 
 SIDE MENU/
   |   ├── Reserve a Room (Service Area)/
-  │   |  ├── For each room, a boxed image that allows reservation to be made, view calendar of reservations and availability, link to description of the room /
+  │   |  ├── For each room, a boxed image that allows reservation to be made, view calendar of
+             reservations and availability, link to description of the room /
   │   |  ├── Announcements
   │   |  ├── Calendar with Operating Hours (so you can mark holidays and closings as well as operating hours)
   │   |  ├── Events
@@ -21,15 +22,18 @@ SIDE MENU/
   │   |  ├── Gallery
   │   |  ├── Description Page with Support Information and Operating Hours.
   |   ├── Checkout Equipment (Service Area)/
-  │   |  ├── For each piece of equipment, a boxed image that allows a check out reservation to be made, view calendar that shows when it was checked out and when it will be returned and add to waitlist if checked out, link to description of the equipment /
+  │   |  ├── For each piece of equipment, a boxed image that allows a check out reservation to be made, view
+             calendar that shows when it was checked out and when it will be returned and add to waitlist if checked out, link to description of the equipment /
   │   |  ├── Announcements
-  │   |  ├── Calendar with Operating Hours for pickups anbd returns (so you can mark holidays and closings as well as operating hours)
+  │   |  ├── Calendar with Operating Hours for pickups anbd returns (so you can mark holidays and closings
+             as well as operating hours)
   │   |  ├── Events
   │   |  ├── Policies
   │   |  ├── Gallery
   │   |  ├── Description Page with Support Information and Operating Hours.
   |   ├── Lab #1 (Service Area: Allow appointments to be made on a machine in a Lab)
-  │   |  ├── For each piece of equipment, a boxed image that allows a reservation to be made on the equipment, view calendar that shows current reservations and availabilty, link to description of the equipment /
+  │   |  ├── For each piece of equipment, a boxed image that allows a reservation to be made on the equipment,
+             view calendar that shows current reservations and availabilty, link to description of the equipment /
   │   |  ├── Announcements
   │   |  ├── Calendar with Operating Hours (so you can mark holidays and closings as well as operating hours)
   │   |  ├── Events
