@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './calendar.css';
-import DateTime from './DateTime';
 const Calendar = () => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
@@ -36,8 +35,7 @@ const Calendar = () => {
         <div >
       <h1>Calendar</h1>
       <div className='flex border'>
-        <DateTime/>
-        <DateTime/>      
+          
       </div>
       <button onClick={handleBooking}>Book</button>
       <table className="booking-table">
