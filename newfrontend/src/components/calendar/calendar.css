@@ -1,0 +1,43 @@
+.calendar-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .input-container {
+    margin-bottom: 10px;
+  }
+  
+  .booking-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  /* Example styling for occupied and available cells */
+  .occupied {
+    background-color: #ff6961; /* Light red */
+  }
+  
+  .available {
+    background-color: #77dd77; /* Light green */
+  }
+  .selected {
+    background-color: #2172e3; /* Light green */
+  }
+
+
+  button{
+    
+    padding:1rem;
+    background-color: rgb(154, 154, 154);
+    color:white
+  }
+
+  
