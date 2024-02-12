@@ -41,7 +41,10 @@ SIDE MENU/
   │   |  ├── Gallery
   │   |  ├── Description Page with Support Information and Operating Hours.
 
-        ... allow for multiple Labs to be created, each independent of the others. 
+        ... allow for multiple Labs to be created, each independent of the others.
+## Database design
+
+![Database ER diagram (Unified Scheduler)](https://github.com/imageless-innovations/unified-scheduler/assets/52875456/120e628f-d2a5-4d92-80a7-33b4240868bb)
 
 /* We will want to allow for Global Announcements
  
