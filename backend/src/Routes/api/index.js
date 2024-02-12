@@ -1,0 +1,10 @@
+const router = require('express').Router();
+router.use('/auth', require('./Auth'));
+// router.use('/users', require('./users'));
+// router.use('/resources', require('./resources'));
+// router.use('/reservations', require('./reservations'));
+// router.use('/resourceGroups', require('./resourceGroups'));
+// router.use('/manages', require('./manages'));
+// router.use('/userGroups', require('./userGroups'));
+// router.use('/roles', require('./roles'));
+module.exports = router;
