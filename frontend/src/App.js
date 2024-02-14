@@ -27,7 +27,7 @@ const App = () => {
           }
         />
         <Route path="/admin"  element={<PrivateRoute component={AdminDashboard} />} />
-        <Route path="/reserve" element={<Calendar />} />
+        <Route path="/reserve"  element={<PrivateRoute component={Calendar} />} />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
       </Layout>

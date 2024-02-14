@@ -5,3 +5,5 @@ require('./Users');
 require('./Resources');
 require('./UserGroups');
 require('./Roles');
+
+require('./Logrequest');
