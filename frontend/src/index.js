@@ -5,10 +5,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './theme.css'; // Import the theme file
 import './index.css'
+import { AuthProvider } from './contexts/AuthContexts';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <AuthProvider>
     <App />
+    </AuthProvider>
   </React.StrictMode>
 );
 

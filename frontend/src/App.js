@@ -1,21 +1,24 @@
 // App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContexts';
 import PrivateRoute from './PrivateRoute';
 
 import Home from './pages/Home';
 import Login from './pages/Auth/Login';
 import AdminDashboard from './pages/AdminDashboard';
 import Layout from './Layouts/Layout';
+import RoomReserve from './pages/Rooms/Rooms';
+import RoomAdd from './pages/Rooms/AddRoom';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import Calendar from './components/calendar/calendar';
+import { useAuth } from './contexts/AuthContexts'
+import { AlertProvider } from './contexts/AlertsContext';
 const App = () => {
+  const { user } = useAuth(); // Use the useAuth hook to get user information
   return (
-    <AuthProvider>
+    <AlertProvider>
     <Router>
       <Layout>
       <Routes>
@@ -26,13 +29,15 @@ const App = () => {
              <PrivateRoute component={Home} />
           }
         />
+        <Route path="/rooms/*" element={<PrivateRoute component={RoomReserve} />} />
+          <Route path='/rooms/add' element={<PrivateRoute component={RoomAdd} />}/>
         <Route path="/admin"  element={<PrivateRoute component={AdminDashboard} />} />
-        <Route path="/reserve"  element={<PrivateRoute component={Calendar} />} />
+
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
       </Layout>
     </Router>
-    </AuthProvider>
+    </AlertProvider>
   );
 };
 

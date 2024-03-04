@@ -29,7 +29,7 @@ export const items = [
     },
     {
       title: 'Reserve Room',
-      path: '/reserve',
+      path: '/rooms',
       icon: (
         <SvgIcon fontSize="small">
           <ShoppingBagIcon />

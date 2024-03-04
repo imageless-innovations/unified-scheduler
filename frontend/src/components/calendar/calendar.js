@@ -41,9 +41,8 @@ const Calendar = () => {
   };
 
   return (
-    <div>
-      <h1>Calendar</h1>
-      <div className='flex border py-2 justify-between'>
+    <div className='p-4 my-2 border border-gray-400'>
+      <div className='flex border justify-between'>
         <div className='flex-shrink-0'>
           <div className='flex gap-4'>
             <button onClick={() => handleDateChange("decrement")}>❮</button>
