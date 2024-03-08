@@ -15,10 +15,10 @@ const dbConnect=async ()=>{
   const isMongooseDebugMode = process.env.IS_MONGOOSE_DEBUG_MODE == 'true'
   await mongoose.connect(connectionString).then(()=>{
   console.log(conn_msg)
-  })
+   })
   if(isMongooseDebugMode) {
     mongoose.set('debug', true)
   }
 }
-dbConnect()
-module.exports=mongoose
+
+module.exports=dbConnect

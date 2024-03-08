@@ -14,6 +14,7 @@ const resourceSchema = new mongoose.Schema({
   },
   type: {
     type: String,
+    required: true,
   },
   location: {
     type: String,
@@ -21,7 +22,7 @@ const resourceSchema = new mongoose.Schema({
   capacity: {
     type: Number,
   },
-  picture: {
+  pictures: {
     type: String,
   },
   createdAt: {

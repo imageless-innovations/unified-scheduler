@@ -17,8 +17,9 @@ exports.handleErrorResponse = (res, errorCode, errorMessage) => {
   sendResponse(res, errorCode, { message: errorMessage });
 };
 
-exports.handleErrorObject = (res, errorCode, errorObject) => {
-  sendResponse(res, errorCode, { errors: errorObject });
+exports.handleErrorObject = (res, errorCode,message, errors) => {
+  console.log('errorObject',errors,message)
+  sendResponse(res, errorCode,{message, errors });
 };
 
 exports.handleSuccessResponse = (res, successMessage, statusCode = 200) => {
