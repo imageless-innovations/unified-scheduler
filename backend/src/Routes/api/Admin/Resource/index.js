@@ -4,7 +4,6 @@ const checkParameters =require('@middleware/checkParameters');
 const {processMultipleFileMiddleware}=require('@middleware/processFile');
 const ResourceParameters = {
     name: 'string',
-    type: 'string',
     location: 'string',
   };
 

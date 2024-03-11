@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
 const resourceSchema = new mongoose.Schema({
-  resourceID: {
-    type: String,
-    required: true,
-  },
   name: {
     type: String,
     required: true,
@@ -23,7 +19,7 @@ const resourceSchema = new mongoose.Schema({
     type: Number,
   },
   pictures: {
-    type: String,
+    type: Array,
   },
   createdAt: {
     type: Date,

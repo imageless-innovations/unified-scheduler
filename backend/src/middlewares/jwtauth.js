@@ -1,23 +1,31 @@
 // middleware/jwtauth.js
 const jwt = require('jsonwebtoken');
 const responseHandler = require('@helpers/responseHandler'); 
+const getTokenFromHeaders = (req) => {
+  const { headers: { authorization }} = req
+  if(authorization && authorization.split(' ')[0] === 'Bearer') {
+    return authorization.split(' ')[1]
+  }
+
+  return null
+}
 
 const authenticateToken = (req, res, next) => {
-  const token = req.header('Authorization');
-
+  const token = getTokenFromHeaders(req)
   if (!token) {
     return responseHandler.handleErrorResponse(res, 401, 'Bearer-Token is missing');
   }
+  try{
+  console.log('token', token);
+  const decode=jwt.verify(token, process.env.JWT_SECRET,{ algorithm: 'HS256'})
+  console.log('decode',decode)
+  req.user = decode.user;
+  next();
+  }
+  catch(err){
+    return responseHandler.handleErrorResponse(res, 401, 'Invalid Token');
+  }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    console.log('user', err);
-    if (err) {
-      return responseHandler.handleErrorResponse(res, 401, 'Invalid token');
-    }
-
-    req.user = user;
-    next();
-  });
 };
 
 const adminAuthenticateToken = (req, res, next) => {

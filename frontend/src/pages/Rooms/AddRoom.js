@@ -1,49 +1,145 @@
-import React from 'react'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-
+import React from 'react';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { useAuth } from '../../contexts/AuthContexts'
+import {createresource} from '../../apis/Api'
 function AddRoom() {
+  const { user } = useAuth();
+  const validationSchema = yup.object({
+    resourceName: yup
+      .string('Enter Resource Name')
+      .required('Resource Name is required'),
+    type: yup
+      .string('Enter Resource type')
+      .required('Resource type is required'),
+    capacity: yup
+      .number('Enter capacity')
+      .required('capacity is required')
+      .positive(),
+    location: yup
+      .string('Enter location')
+      .required('location is required'),
+    description: yup
+      .string('Enter description')
+  });
+  const formik = useFormik({
+    initialValues: {
+      resourceName: '',
+      type: 'room',
+      location: '',
+      capacity: 1,
+      description: '',
+      pictures: null,
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      console.log('values', values);
+      const formData = new FormData();
+      formData.append('name', values.resourceName);
+      formData.append('type', values.type);
+      formData.append('location', values.location);
+      formData.append('capacity', values.capacity);
+      formData.append('description', values.description);
+      formData.append('files', values.pictures);
+      const res= await createresource(formData, user.token);
+      console.log('res', res);
+    },
+  });
+
   return (
     <div>
       <h2>Add Room</h2>
-      <div>
-<Formik
-  initialValues={{ email: '', password: '' }}
-  validate={values => {
-    const errors = {};
-    if (!values.email) {
-      errors.email = 'Required';
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-    ) {
-      errors.email = 'Invalid email address';
-    }
-    return errors;
-  }}
-  onSubmit={(values, { setSubmitting }) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-      setSubmitting(false);
-    }, 400);
-  }}
->
-  {({ isSubmitting }) => (
-    <Form className='flex flex-col w-1/4 gap-4 mx-auto mt-4 p-4 border border-gray-300 rounded-md bg-gray-100'>
-      <Field type="email" name="email" className='p-2 border border-gray-300 rounded-md'/>
-      <ErrorMessage name="email" component="div" className='border border-red-600 p-2 rounded-md' />
-      <Field type="password" name="password" />
-      <ErrorMessage name="password" component="div" />
-      <button type="submit" disabled={isSubmitting}>
-        Submit
-      </button>
-    </Form>
+     <form  className="flex flex-col w-1/4 gap-4 mx-auto mt-4 p-4 border border-gray-300 rounded-md bg-gray-100"
+            onSubmit={formik.handleSubmit}>
+    {/* Bind input fields directly */}
+    <input
+      type="text"
+      name="resourceName"
+      className="p-2 border border-gray-300 rounded-md"
+      placeholder="Resource Name"
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      value={formik.values.resourceName}
+    />
+    {formik.touched.resourceName && formik.errors.resourceName ? (
+      <div className='border border-red-400 rounded p-2'>{formik.errors.resourceName}</div>
+    ) : null}
 
-  )}
+    <select
+      name="location"
+      className="p-2 border border-gray-300 rounded-md"
+      placeholder="Select Location"
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      value={formik.values.location}
+      error={formik.touched.email && Boolean(formik.errors.resourceName)}
 
-</Formik>
+    >
+      <option value="" label="Select Location" />
+      <option value="location1" label="Location 1" />
+      <option value="location2" label="Location 2" />
+    </select>
+    {formik.touched.location && formik.errors.location ? (
+      <div className='border border-red-400 rounded p-2'>{formik.errors.location}</div>
+    ) : null}
 
-</div>
+    <select
+      name="type"
+      className="p-2 border border-gray-300 rounded-md"
+      placeholder="Select Type"
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      value={formik.values.type}
+    >
+      <option value="" label="Select Type" />
+      <option value="1" label="room" />
+      <option value="2" label="device" />
+    </select>
+    {formik.touched.type && formik.errors.type ? (
+      <div className='border border-red-400 rounded p-2'>{formik.errors.type}</div>
+    ) : null}
+
+    <input
+      type="number"
+      name="capacity"
+      className="p-2 border border-gray-300 rounded-md"
+      placeholder="capacity"
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      value={formik.values.capacity}
+      error={formik.touched.email && Boolean(formik.errors.resourceName)}
+    />
+    {formik.touched.capacity && formik.errors.capacity ? (
+      <div className='border border-red-400 rounded p-2'>{formik.errors.capacity}</div>
+    ) : null}
+
+    <textarea
+      name="description"
+      className="p-2 border border-gray-300 rounded-md"
+      placeholder="description"
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      value={formik.values.description}
+      error={formik.touched.email && Boolean(formik.errors.resourceName)}
+
+    />
+    {formik.touched.description && formik.errors.description ? (
+      <div className='border border-red-400 rounded p-2'>{formik.errors.description}</div>
+    ) : null}
+    <input
+      type="file"
+      name="pictures"
+      className="p-2 border border-gray-300 rounded-md"
+      onChange={(event) => {
+        formik.setFieldValue('pictures', event.currentTarget.files[0]);
+      }}
+      error={formik.touched.email && Boolean(formik.errors.resourceName)}
+    />
+
+    <button  type='submit' className="p-2 border border-gray-300 rounded-md bg-gray-400" >Submit</button>
+  </form>
     </div>
-  )
+  );
 }
 
-export default AddRoom
+export default AddRoom;

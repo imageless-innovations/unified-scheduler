@@ -9,6 +9,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import Layout from './Layouts/Layout';
 import RoomReserve from './pages/Rooms/Rooms';
 import RoomAdd from './pages/Rooms/AddRoom';
+import Resources from './pages/Resources/Resources';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -29,6 +30,7 @@ const App = () => {
              <PrivateRoute component={Home} />
           }
         />
+        <Route path="/resources/*" element={<PrivateRoute component={Resources} />} />
         <Route path="/rooms/*" element={<PrivateRoute component={RoomReserve} />} />
           <Route path='/rooms/add' element={<PrivateRoute component={RoomAdd} />}/>
         <Route path="/admin"  element={<PrivateRoute component={AdminDashboard} />} />

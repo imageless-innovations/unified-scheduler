@@ -1,6 +1,7 @@
 import React from 'react'
 import Calendar from '../../components/calendar/calendar';
 import Menu from '../../components/menu'
+import Pagination from '../../components/forms/pagination'
 function Rooms() {
     const menuItems=[
         {name:"Add Room",href:"/rooms/add"},
@@ -13,6 +14,7 @@ function Rooms() {
                 <Menu title={"manage"} menuItems={menuItems}/>
             </div>
             <Calendar />
+            <Pagination />
         </div>
     )
 }

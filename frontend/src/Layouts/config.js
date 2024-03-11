@@ -28,7 +28,16 @@ export const items = [
       )
     },
     {
-      title: 'Reserve Room',
+      title: 'Resources',
+      path: '/resources',
+      icon: (
+        <SvgIcon fontSize="small">
+          <ShoppingBagIcon />
+        </SvgIcon>
+      )
+    },
+    {
+      title: 'Schedule',
       path: '/rooms',
       icon: (
         <SvgIcon fontSize="small">

@@ -6,7 +6,6 @@ const checkParameters = (requiredParams) => {
       const errors = [];
       // Check if each required parameter exists in the request
       Object.keys(requiredParams).forEach(name => {
-        console.log('name',name,req.body[name])
         if (!req.body[name] ) {
           missingParams.push(name);
             errors.push(`${name} value cannot be empty`);
