@@ -7,6 +7,7 @@ import {useAuth} from '../contexts/AuthContexts'
 import AlertComp from '../components/Alerts/Alert'
 import Stack from '@mui/material/Stack';
 import { useAlert } from '../contexts/AlertsContext';
+import LogoutIcon from '@mui/icons-material/Logout';
 const Layout = ({ children }) => {
 const { user ,logout} = useAuth();
 const {alerts,addAlert,removeAlert}=useAlert()
@@ -20,12 +21,8 @@ const {alerts,addAlert,removeAlert}=useAlert()
         <header className="header" >
         <div className="flex justify-between">
         <h1>Header Section</h1>
-        <button style={{ backgroundColor: 'var(--button-color)' }} 
-        onClick={logout}
-        className='p-1 rounded'
-        >
-        logout
-        </button>
+
+        <LogoutIcon onClick={logout}/>
           </div>
           <div className='absolute right-0 m-2 z-10'>
           <Stack sx={{ width: '100%' }} spacing={2}>

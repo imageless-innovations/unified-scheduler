@@ -13,6 +13,8 @@ app.use(cors());
 dotenv.config();
 // Serve static files from the 'userProfile' directory
 app.use('/userProfile', express.static(path.join(__dirname, 'userProfile')));
+app.use('/resourcePictures', express.static(path.join(__dirname, 'resourcePictures')));
+
 
 const dbconnect=require('./src/config/database');
 

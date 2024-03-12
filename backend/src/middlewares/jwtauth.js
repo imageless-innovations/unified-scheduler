@@ -16,9 +16,7 @@ const authenticateToken = (req, res, next) => {
     return responseHandler.handleErrorResponse(res, 401, 'Bearer-Token is missing');
   }
   try{
-  console.log('token', token);
   const decode=jwt.verify(token, process.env.JWT_SECRET,{ algorithm: 'HS256'})
-  console.log('decode',decode)
   req.user = decode.user;
   next();
   }

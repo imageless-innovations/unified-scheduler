@@ -12,9 +12,10 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { items } from './config';
 import {  useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 export default  function SideNav(){
   const navigate = useNavigate();
-
+  const [currentPage, setCurrentPage] = useState("Home");
   const handleItemClick = (path) => {
     // Navigate to the specified path
     navigate(path);
@@ -24,16 +25,15 @@ return (
     <Box
       sx={{ width: 250 }}
       role="presentation"
-
     >
       <List>
         {items.map((text, index) => (
-          <ListItem key={text.title} disablePadding onClick={() => handleItemClick(text.path)}>
+          <ListItem key={text.title} disablePadding onClick={() => handleItemClick(text.path)}  sx={{backgroundColor:text.title===currentPage && "var(--primary-color)"}}>
             <ListItemButton>
-              <ListItemIcon>
+              <ListItemIcon >
                 {text.icon}
               </ListItemIcon>
-              <ListItemText primary={text.title} />
+              <ListItemText primary={text.title} onClick={()=>{setCurrentPage(text.title)}} />
             </ListItemButton>
           </ListItem>
         ))}

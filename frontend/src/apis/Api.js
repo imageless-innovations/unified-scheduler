@@ -29,7 +29,6 @@ export async function loginApi(userName, password) {
 }
 
 export async function createresource(resourceData, token) {
-  console.log('resourceData=====', resourceData,BaseUrl);
   try {
     const response = await fetch(BaseUrl + 'admin/resources/create', {
       method: 'POST',
@@ -53,6 +52,33 @@ export async function createresource(resourceData, token) {
     return data;
   } catch (error) {
     console.error('Error in createresource:', error);
+    throw error; // Rethrow the error to propagate it further
+  }
+}
+export async function getresources(token) {
+  try {
+    const response = await fetch(BaseUrl + 'common/resources', {
+      method: 'GET',
+      headers: {
+        'Authorization': "Bearer " +token,
+      },
+    });
+    let data;
+    try {
+      data = await response.json();
+      console.log("Response data:", data);
+    } catch (jsonError) {
+      // Handle JSON parsing error (e.g., if response is not valid JSON)
+      console.error('Error parsing JSON:', jsonError);
+      data = null;
+    }
+    if (!response.ok) {
+      console.error('API Error:', data);
+    }
+    return data;
+  }
+  catch (error) {
+    console.error('Error in getresources:', error);
     throw error; // Rethrow the error to propagate it further
   }
 }
