@@ -6,8 +6,9 @@ const reservesSchema = new mongoose.Schema({
     required: true,
   },
   resourceID: {
-    type: String,
     required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Resources',
   },
   startDateTime: {
     type: Date,

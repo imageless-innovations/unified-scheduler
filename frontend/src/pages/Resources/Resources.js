@@ -47,7 +47,7 @@ function Resources() {
       <Pagination  itemsPerPage={10} totalItems={10}/>
       <h3>Resources</h3>
       <div className='w-full flex flex-wrap gap-2'>
-      {resources.map((resource)=><ResourceCard  key={resource._id} resource={resource}/>)}
+      {resources?.map((resource)=><ResourceCard  key={resource._id} resource={resource}/>)}
       </div>
       <Pagination  itemsPerPage={10} totalItems={10}/>
 
