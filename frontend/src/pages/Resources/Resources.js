@@ -5,27 +5,27 @@ import { getresources } from '../../apis/Api'
 import { useState,useEffect } from 'react'
 import Menu from '../../components/menu'
 import { useAuth } from '../../contexts/AuthContexts'
-const menuItems=[
-  {name:"Add Room",href:"/rooms/add"},
-  {name:"Edit Room",href:"/rooms/edit"},
-  {name:"Delete Room",href:"/rooms/delete"}]
+import { useNavigate } from 'react-router-dom'
 function Resources() {
+  const navigate=useNavigate();
   const [resources, setResources] = useState([]);
   const {user}=useAuth();
+  const fetchResources = async () => {
+    const resources = await getresources(user.token);
+    console.log('resources', resources);
+    setResources(resources.data);
+  };
+
   useEffect(() => {
-    const fetchResources = async () => {
-      const resources = await getresources(user.token);
-      console.log('resources', resources);
-      setResources(resources.data);
-    };
     fetchResources();
   }, []); 
+  const handleNavigate=(path)=>{
+    navigate(path);
+  }
   return (
     <div>
       <div>
-      <div className='flex flex-row-reverse'>
-                <Menu title={"manage"} menuItems={menuItems}/>
-      </div>
+     
       </div>
       <div className='flex flex-col'>
       <h3>Filter</h3>
@@ -38,7 +38,10 @@ function Resources() {
       <div className='py-4  flex gap-4'>
         <button className="px-4 py-2 rounded" style={{backgroundColor:'var(--secondary-color)'}}>Filter</button>
         <button className="px-4 py-2 rounded bg-gray-300">Reset</button>
-
+        <div className='flex flex-row-reverse w-full'>
+            {/* <Menu title={"manage"} menuItems={menuItems}/> */}
+            <button style={{backgroundColor:'var(--primary-color)'}} className='p-2 rounded' onClick={()=>{handleNavigate('/rooms/add')}}>Add Resource</button>
+      </div>
       </div>
       </div>
       <div className='py-2'>

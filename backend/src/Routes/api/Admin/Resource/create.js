@@ -2,12 +2,13 @@ const express = require('express');
 const responseHandler = require('@helpers/responseHandler');
 const mongoose = require('mongoose');
 const Resource = mongoose.model('Resources');
-const {storeMultipleImages}=require('@helpers/utils')
+const {storeMultipleImages}=require('@helpers/utils');
+const { create } = require('../../../../models/ResourceAvailability');
 
 // POST /api/admin/resource/create
 const createResource = async (req, res) => {
     // Check if all attributes exist
-   const {name, type, location, capacity,description} = req.body;
+   const {name, type, location, capacity,description,policyId} = req.body;
     const {files} = req;
     const existingResource = await Resource.findOne({name});
     if (existingResource) {
@@ -19,7 +20,10 @@ const createResource = async (req, res) => {
         location,
         capacity,
         description,
+        resourceavailabilityID:policyId,
+        createdBy:req.user._id
     }
+    console.log('resource',resource);
     if(req.files){
         const savedpictures=await storeMultipleImages(`resourcePictures/${type}/${name}`,req.files) || []
         if(!savedpictures){

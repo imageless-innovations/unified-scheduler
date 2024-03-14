@@ -5,6 +5,7 @@ const {processMultipleFileMiddleware}=require('@middleware/processFile');
 const ResourceParameters = {
     name: 'string',
     location: 'string',
+    policyId: 'string',
   };
 
 router.post('/create'  ,processMultipleFileMiddleware,checkParameters(ResourceParameters), require('./create'))

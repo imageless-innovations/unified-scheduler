@@ -34,7 +34,19 @@ export const items = [
         <SvgIcon fontSize="small">
           <ShoppingBagIcon />
         </SvgIcon>
-      )
+      ),
+      children: [
+        {
+          title: 'Policy',
+          parent: 'Resources',
+          path: '/resources/policy',
+          icon: (
+            <SvgIcon fontSize="small">
+              <ShoppingBagIcon />
+            </SvgIcon>
+          )
+        }
+      ]
     },
     {
       title: 'Schedule',

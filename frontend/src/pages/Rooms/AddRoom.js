@@ -3,7 +3,19 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useAuth } from '../../contexts/AuthContexts'
 import {createresource} from '../../apis/Api'
+import { getminpolicy } from '../../apis/Api'
+import { useState , useEffect} from 'react'
 function AddRoom() {
+  const [policy, setPolicy] = useState([]);
+  const fetchMinPolicy = async () => {
+    const policy = await getminpolicy(user.token);
+    console.log('policy', policy);
+    setPolicy(policy.data);
+  };
+  useEffect(() => {
+    fetchMinPolicy();
+  }, []);
+
   const { user } = useAuth();
   const validationSchema = yup.object({
     resourceName: yup
@@ -30,6 +42,7 @@ function AddRoom() {
       capacity: 1,
       description: '',
       pictures: null,
+      policy:''
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -41,6 +54,7 @@ function AddRoom() {
       formData.append('capacity', values.capacity);
       formData.append('description', values.description);
       formData.append('files', values.pictures);
+      formData.append('policyId', values.policy);
       const res= await createresource(formData, user.token);
       console.log('res', res);
     },
@@ -49,7 +63,7 @@ function AddRoom() {
   return (
     <div>
       <h2>Add Room</h2>
-     <form  className="flex flex-col w-1/4 gap-4 mx-auto mt-4 p-4 border border-gray-300 rounded-md bg-gray-100"
+     <form  className="flex flex-col w-1/2 gap-4 mx-auto mt-4 p-4 border border-gray-300 rounded-md bg-gray-100"
             onSubmit={formik.handleSubmit}>
     {/* Bind input fields directly */}
     <input
@@ -82,7 +96,23 @@ function AddRoom() {
     {formik.touched.location && formik.errors.location ? (
       <div className='border border-red-400 rounded p-2'>{formik.errors.location}</div>
     ) : null}
-
+    <select
+      name="policy"
+      className="p-2 border border-gray-300 rounded-md"
+      placeholder="Select Policy"
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      value={formik.values.policy}
+      error={formik.touched.email && Boolean(formik.errors.resourceName)}
+    >
+      <option value="" label="Select Policy" />
+      {policy.map((policy)=>{
+        return <option value={policy._id} label={policy.name} />
+      })}
+    </select>
+    {formik.touched.policy && formik.errors.policy ? (
+      <div className='border border-red-400 rounded p-2'>{formik.errors.policy}</div>
+    ) : null}
     <select
       name="type"
       className="p-2 border border-gray-300 rounded-md"

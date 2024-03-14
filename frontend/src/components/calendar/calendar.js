@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TextField } from "@mui/material";
 import './calendar.css';
 
-const Calendar = () => {
+const Calendar = ({resources}) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedResource, setSelectedResource] = useState(null);
   const [selectedHours, setSelectedHours] = useState({});
@@ -39,6 +39,33 @@ const Calendar = () => {
     RESOURCE_NAME_2: [true, true, true, true, true, false, false, false, false, false, true, true, true, true, true, true, true, true, true, true],
     // Add more dummy data for additional resources
   };
+  useEffect(() => {
+    if (resources.length > 0) {
+      const availableData = generateTimeSlots(resources[0]);
+      console.log(availableData);
+    }
+  }, [resources]);
+  function generateTimeSlots(resource) {
+    console.log("-------------------",resource);
+    const { name, maxReserveTime, resourceavailabilityID } = resource;
+    const timeSlots = [];
+  
+      const startTime = new Date(`2024-03-14T${resourceavailabilityID.startTime}`);
+      const endTime = new Date(`2024-03-14T${resourceavailabilityID.endTime}`);
+      console.log(startTime,endTime);
+      let currentTime = new Date(startTime);
+  
+      while (currentTime < endTime) {
+        const slotEndTime = new Date(currentTime.getTime() + (maxReserveTime * 60000)); // Convert maxReserveTime to milliseconds
+        const isInTimeRange = currentTime >= startTime && slotEndTime <= endTime;
+        timeSlots.push({ name, startTime: currentTime.toTimeString().slice(0, 5), endTime: slotEndTime.toTimeString().slice(0, 5), isInTimeRange });
+        currentTime = new Date(slotEndTime);
+      }
+  
+    return timeSlots;
+  }
+
+
 
   return (
     <div className='p-4 my-2 border border-gray-400'>
