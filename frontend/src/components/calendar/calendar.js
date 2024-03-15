@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { TextField } from "@mui/material";
 import './calendar.css';
-
+const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const Calendar = ({resources}) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedResource, setSelectedResource] = useState(null);
   const [selectedHours, setSelectedHours] = useState({});
-
+  const [totalHours, setTotalHours] = useState(20);
   useEffect(() => {
     setSelectedDate(new Date().toISOString().split('T')[0]);
   }, []);
@@ -18,52 +18,43 @@ const Calendar = ({resources}) => {
   };
 
   const handleCellClick = (resourceName, hour) => {
-    if (!dummyOccupancyData[resourceName][hour]) {
-      const currHours = selectedHours[resourceName] || [];
-      const updatedSelectedHours = {
-        ...selectedHours,
-        [resourceName]: currHours.includes(hour)
-          ? currHours.filter((h) => h !== hour)
-          : [...currHours, hour],
-      };
-      setSelectedResource(resourceName);
-      setSelectedHours(updatedSelectedHours);
-      console.log(`Hour ${hour} for ${resourceName} is now selected.`, updatedSelectedHours);
-    } else {
-      console.log(`Hour ${hour} for ${resourceName} is already booked.`);
-    }
-  };
+    const updatedHours = { ...selectedHours };
+    if(updatedHours[resourceName][hour]===0) return alert('This slot is already booked');
+    if(updatedHours[resourceName][hour]===-1) return alert('This slot is Not available for booking');
 
-  const dummyOccupancyData = {
-    RESOURCE_NAME_1: [true, true, true, true, true, false, false, false, false, false, true, true, true, true, true, true, true, true, true, true],
-    RESOURCE_NAME_2: [true, true, true, true, true, false, false, false, false, false, true, true, true, true, true, true, true, true, true, true],
-    // Add more dummy data for additional resources
-  };
-  useEffect(() => {
-    if (resources.length > 0) {
-      const availableData = generateTimeSlots(resources[0]);
-      console.log(availableData);
+    if (updatedHours[resourceName][hour] === 2) {
+      updatedHours[resourceName][hour] = 0;
+    } else {
+      updatedHours[resourceName][hour] = 2;
     }
-  }, [resources]);
-  function generateTimeSlots(resource) {
-    console.log("-------------------",resource);
-    const { name, maxReserveTime, resourceavailabilityID } = resource;
-    const timeSlots = [];
-  
-      const startTime = new Date(`2024-03-14T${resourceavailabilityID.startTime}`);
-      const endTime = new Date(`2024-03-14T${resourceavailabilityID.endTime}`);
-      console.log(startTime,endTime);
-      let currentTime = new Date(startTime);
-  
-      while (currentTime < endTime) {
-        const slotEndTime = new Date(currentTime.getTime() + (maxReserveTime * 60000)); // Convert maxReserveTime to milliseconds
-        const isInTimeRange = currentTime >= startTime && slotEndTime <= endTime;
-        timeSlots.push({ name, startTime: currentTime.toTimeString().slice(0, 5), endTime: slotEndTime.toTimeString().slice(0, 5), isInTimeRange });
-        currentTime = new Date(slotEndTime);
-      }
-  
-    return timeSlots;
+    setSelectedHours(updatedHours);
+    setSelectedResource(resourceName);
   }
+ 
+
+
+  useEffect(() => {
+   if(resources){
+    const ReservationsData = {};
+    resources.map((resource) => {
+      const resourceData = [];
+      for (let i = 1; i <= totalHours; i++) {
+        const date= new Date(selectedDate);
+        date.setHours(i);
+        const weekDay = date.getDay();
+        console.log("weekDay",weekDay);
+        console.log("resource.resourceavailabilityID",resource);
+        const weekDayAvailability = resource.resourceavailabilityID?.availability?.find(i=>i.day===days[weekDay]);
+        console.log("weekDayAvailability",weekDayAvailability);
+        resourceData.push(1);
+      }
+      ReservationsData[resource.name] = resourceData;
+    });
+    setSelectedHours(ReservationsData);
+    console.log(ReservationsData);
+   }
+  }, [resources]);
+
 
 
 
@@ -103,23 +94,23 @@ const Calendar = ({resources}) => {
         <thead>
           <tr>
             <th>Resource</th>
-            {[...Array(20).keys()].map((hour) => (
-              <th key={hour}>{hour}:00</th>
+            {[...Array(totalHours).keys()].map((hour) => (
+              <th key={hour}>{hour+1}:00</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {Object.keys(dummyOccupancyData).map((resourceName, index) => (
+          {Object.keys(selectedHours).map((resourceName, index) => (
             <tr key={index}>
               <td>{resourceName}</td>
-              {dummyOccupancyData[resourceName].map((isOccupied, hour) => (
+              {selectedHours[resourceName].map((isOccupied, hour) => (
                 <td
                   key={hour}
-                  className={isOccupied ? 'occupied' : selectedHours[resourceName]?.includes(hour) ? 'selected' : 'available'}
+                  className={isOccupied===0 ? 'occupied' : isOccupied===1 ? 'available':'selected'}
                   onClick={() => handleCellClick(resourceName, hour)}
                   style={{ cursor: isOccupied ? 'not-allowed' : 'pointer' }}
                 >
-                  {isOccupied ? 'Booked' : selectedHours[resourceName]?.includes(hour) ? 'selected' : 'available'}
+                  {isOccupied===0 ? 'Booked' : isOccupied===2 ? 'selected' : 'available'}
                 </td>
               ))}
             </tr>

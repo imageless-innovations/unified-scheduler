@@ -19,8 +19,50 @@ function CreatePolicy() {
             name: '',
             maxReserveTime: '',
             reserveTimeInterval: '',
-            availableTime: weekdays.map((v) => ({ name: v, startTime: '', endTime: '', isChecked: false })),
-        },
+            availability: {
+                0: {
+                    isChecked: false,
+                    startTime: '',
+                    endTime: '',
+                },
+                1: {
+                    isChecked: false,
+                    startTime: '',
+                    endTime: '',
+                },
+                2: {
+                    isChecked: false,
+                    startTime: '',
+                    endTime: '',
+                },
+                3: {
+                    isChecked: false,
+                    startTime: '',
+                    endTime: '',
+                },
+                4: {
+                    isChecked: false,
+                    startTime: '',
+                    endTime: '',
+                },
+                5: {
+                    isChecked: false,
+                    startTime: '',
+                    endTime: '',
+                },
+                6: {
+                    isChecked: false,
+                    startTime: '',
+                    endTime: '',
+                },
+                7: {
+                    isChecked: false,
+                    startTime: '',
+                    endTime: '',
+                
+            },
+        }
+    },
         validationSchema: Yup.object({
             name: Yup.string()
                 .required('Name is Required'),
@@ -28,17 +70,20 @@ function CreatePolicy() {
                 .required('Max Reserve Time is Required'),
             reserveTimeInterval: Yup.number()
                 .required('Reserve Time Interval is Required'),
-            availableTime: Yup.array().required('availableTime is Required'),
+            availability: Yup.object().required('availability is Required'),
         }),
         onSubmit: async (values,{resetForm}) => {
-            const availableTime = values.availableTime.filter((v) => v.isChecked).map(i=>{
-                return {
-                    day:i.name,
-                    startTime:i.startTime,
-                    endTime:i.endTime
+            console.log('values', values.availability);
+            const availability={}
+            Object.values(values.availability).forEach((day, index) => {
+                if (day.isChecked) {
+                    availability[index] =  {
+                        start: day.startTime,
+                        end: day.endTime,
+                    };
                 }
             });
-            const policyData = { ...values, availableTime };
+            const policyData = { ...values, availability };
             const data = await createpolicy(policyData, user.token);
             addAlert({id:generateRandomId(),msg:data.message,title:data.success?"success":"error"})
             resetForm();
@@ -71,36 +116,36 @@ function CreatePolicy() {
                             label="All Days"
                             control={
                                 <Checkbox
-                                    checked={formik.values.availableTime[0].isChecked}
+                                    checked={formik.values.availability[0].isChecked}
                                     onChange={event=>{
                                         const isChecked=event.target.checked;
-                                        formik.setFieldValue(`availableTime[0].isChecked`, isChecked);
+                                        formik.setFieldValue(`availability[0].isChecked`, isChecked);
                                     }}
                                 />
                             }
                         />
                         </div>
-                       {formik.values.availableTime[0].isChecked && <div className='flex gap-2 basis-1/2'>
+                       {formik.values.availability[0].isChecked && <div className='flex gap-2 basis-1/2'>
                                             <input
                                                 type="time"
                                                 placeholder="Start Time"
-                                                {...formik.getFieldProps(`availableTime[0].startTime`)}
+                                                {...formik.getFieldProps(`availability[0].startTime`)}
                                                 className='p-2 border border-gray-300 w-full'
                                             />
                                             <input
                                                 type="time"
                                                 placeholder="End Time"
-                                                {...formik.getFieldProps(`availableTime[0].endTime`)}
+                                                {...formik.getFieldProps(`availability[0].endTime`)}
                                                 className='p-2 border border-gray-300 w-full'
                                             />
                         </div>
                         }
-                         {formik.touched.availableTime && formik.values.availableTime[0].isChecked && formik.errors.availableTime && formik.errors.availableTime[0] ? (
-                                        <div className='bg-red-400 w-full text-center my-2 p-2'>{formik.errors.availableTime[0].startTime || formik.errors.availableTime[0].endTime}</div>
+                         {formik.touched.availability && formik.values.availability[0].isChecked && formik.errors.availability && formik.errors.availability[0] ? (
+                                        <div className='bg-red-400 w-full text-center my-2 p-2'>{formik.errors.availability[0].startTime || formik.errors.availability[0].endTime}</div>
                                     ) : null}
                         </div>
                         <Box sx={{ display: 'flex', flexDirection: 'column'}} >
-                            {!formik.values.availableTime[0].isChecked && weekdays.map((day, index) => (
+                            {!formik.values.availability[0].isChecked && weekdays.map((day, index) => (
                                 index !== 0 &&
                                 <div key={index} className='flex flex-wrap'>
                                     <div className='basis-1/2'>
@@ -108,33 +153,33 @@ function CreatePolicy() {
                                         label={day}
                                         control={
                                             <Checkbox
-                                                checked={formik.values.availableTime[index].isChecked}
+                                                checked={formik.values.availability[index].isChecked}
                                                 onChange={event => {
                                                     const isChecked = event.target.checked;
-                                                    formik.setFieldValue(`availableTime[${index}].isChecked`, isChecked);
+                                                    formik.setFieldValue(`availability[${index}].isChecked`, isChecked);
                                                 }}
                                             />
                                         }
                                     />
                                     </div>
-                                    {formik.values.availableTime[index].isChecked && (
+                                    {formik.values.availability[index].isChecked && (
                                         <div className='flex basis-1/2 gap-2'>
                                             <input
                                                 type="time"
                                                 placeholder="Start Time"
-                                                {...formik.getFieldProps(`availableTime[${index}].startTime`)}
+                                                {...formik.getFieldProps(`availability[${index}].startTime`)}
                                                 className='p-2 border border-gray-300 w-full'
                                             />
                                             <input
                                                 type="time"
                                                 placeholder="End Time"
-                                                {...formik.getFieldProps(`availableTime[${index}].endTime`)}
+                                                {...formik.getFieldProps(`availability[${index}].endTime`)}
                                                 className='p-2 border border-gray-300 w-full'
                                             />
                                         </div>
                                     )}
-                                    {formik.touched.availableTime && formik.values.availableTime[index].isChecked && formik.errors.availableTime && formik.errors.availableTime[index] ? (
-                                        <div className='bg-red-400 w-full text-center my-2 p-2'>{formik.errors.availableTime[index].startTime || formik.errors.availableTime[index].endTime}</div>
+                                    {formik.touched.availability && formik.values.availability[index].isChecked && formik.errors.availability && formik.errors.availability[index] ? (
+                                        <div className='bg-red-400 w-full text-center my-2 p-2'>{formik.errors.availability[index].startTime || formik.errors.availability[index].endTime}</div>
                                     ) : null}
                                 </div>))}
                         </Box>

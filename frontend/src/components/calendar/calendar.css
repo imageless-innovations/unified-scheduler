@@ -31,7 +31,9 @@
   .selected {
     background-color: #2172e3; /* Light green */
   }
-
+  .notAvailable {
+    background-color: #66656558; /* Light green */
+  }
 
   button{
     

@@ -57,8 +57,8 @@ const handleAddPolicy=()=>{
                         </div>
                         <div>
                             <h3>Availablility Time</h3>
-                            <p>{policy.availableTime.map((i)=>{
-                                return i.day+" "+i.start+" - "+i.end
+                            <p>{Object.keys(policy.availability).map((i,idx)=>{
+                                return policy.availability[i].start+" - "+policy.availability[i].end
                             })}</p>
                         </div>
                         <div>
