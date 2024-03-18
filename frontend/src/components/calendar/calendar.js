@@ -6,7 +6,7 @@ const Calendar = ({resources}) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedResource, setSelectedResource] = useState(null);
   const [selectedHours, setSelectedHours] = useState({});
-  const [totalHours, setTotalHours] = useState(20);
+  const [totalHours, setTotalHours] = useState(23);
   useEffect(() => {
     setSelectedDate(new Date().toISOString().split('T')[0]);
   }, []);
@@ -21,16 +21,31 @@ const Calendar = ({resources}) => {
     const updatedHours = { ...selectedHours };
     if(updatedHours[resourceName][hour]===0) return alert('This slot is already booked');
     if(updatedHours[resourceName][hour]===-1) return alert('This slot is Not available for booking');
-
+    console.log("uupupu=",updatedHours[resourceName][hour],resourceName);
     if (updatedHours[resourceName][hour] === 2) {
-      updatedHours[resourceName][hour] = 0;
+      updatedHours[resourceName][hour] = 1;
     } else {
       updatedHours[resourceName][hour] = 2;
     }
     setSelectedHours(updatedHours);
     setSelectedResource(resourceName);
   }
- 
+  function isHourInRange(hour, start, end) {
+    const startTime = parseInt(start.split(':')[0]);
+    const endTime = parseInt(end.split(':')[0]);
+  
+    hour = parseInt(hour);
+  console.log("hour",hour,start,end,startTime,endTime);
+    if (endTime === 0 && hour === 0) {
+      return 1; // Special case: midnight is considered within the range
+    }
+  
+    if ((hour >= startTime && hour < endTime) || (hour === startTime && hour === endTime)) {
+      return 1; // Hour is within the range
+    } else {
+      return -1; // Hour is not within the range
+    }
+  }
 
 
   useEffect(() => {
@@ -42,11 +57,24 @@ const Calendar = ({resources}) => {
         const date= new Date(selectedDate);
         date.setHours(i);
         const weekDay = date.getDay();
-        console.log("weekDay",weekDay);
-        console.log("resource.resourceavailabilityID",resource);
-        const weekDayAvailability = resource.resourceavailabilityID?.availability?.find(i=>i.day===days[weekDay]);
-        console.log("weekDayAvailability",weekDayAvailability);
-        resourceData.push(1);
+        const availability = resource.resourceavailabilityID?.availability
+        console.log("availability",availability);
+        if('0' in availability && Object.keys(availability).length===1){
+          const weekDayAvailability = availability[weekDay]
+          console.log("weekDayAvailability",weekDayAvailability);
+          if (weekDayAvailability) {
+          const hour=isHourInRange(i, weekDayAvailability.start, weekDayAvailability.end);
+          console.log("hour",hour);
+          resourceData.push(hour);
+          }
+        }
+        else{
+          if(availability[weekDay]===0){
+            resourceData.push(-1);
+            continue;
+          }
+        }
+    
       }
       ReservationsData[resource.name] = resourceData;
     });
@@ -60,8 +88,8 @@ const Calendar = ({resources}) => {
 
   return (
     <div className='p-4 my-2 border border-gray-400'>
-      <div className='flex border justify-between'>
-        <div className='flex-shrink-0'>
+      <div className='flex  justify-between'>
+        <div className='flex-shrink-0 flex items-center gap-4'>
           <div className='flex gap-4'>
             <button onClick={() => handleDateChange("decrement")}>❮</button>
             <TextField
@@ -74,6 +102,14 @@ const Calendar = ({resources}) => {
               }}
             />
             <button onClick={() => handleDateChange("increment")}>❯</button>
+          </div>
+          <div className='flex gap-4'>
+            <div className='notAvailable p-2'>Not Available</div>
+            <div className='occupied p-2 text-white'>Booked</div>
+            <div className='selected p-2 text-white'>Selected</div>
+            <div className='available p-2 text-white'>Available</div>
+
+
           </div>
         </div>
         {selectedResource && selectedHours[selectedResource]?.length > 0 && (
@@ -106,11 +142,11 @@ const Calendar = ({resources}) => {
               {selectedHours[resourceName].map((isOccupied, hour) => (
                 <td
                   key={hour}
-                  className={isOccupied===0 ? 'occupied' : isOccupied===1 ? 'available':'selected'}
+                  className={isOccupied===0 ? 'occupied' : isOccupied===1 ? 'available':isOccupied===-1?"notAvailable":'selected'}
                   onClick={() => handleCellClick(resourceName, hour)}
-                  style={{ cursor: isOccupied ? 'not-allowed' : 'pointer' }}
+                  style={{ cursor: isOccupied===1 ? 'pointer' : 'not-allowed',fontSize: '10px'}}
                 >
-                  {isOccupied===0 ? 'Booked' : isOccupied===2 ? 'selected' : 'available'}
+                  {isOccupied===0 ? 'Booked' : isOccupied===2 ? 'selected' : isOccupied===-1?"Not Available" :'available'}
                 </td>
               ))}
             </tr>

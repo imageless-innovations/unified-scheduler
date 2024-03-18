@@ -84,6 +84,7 @@ function CreatePolicy() {
                 }
             });
             const policyData = { ...values, availability };
+            console.log('policyData', policyData);
             const data = await createpolicy(policyData, user.token);
             addAlert({id:generateRandomId(),msg:data.message,title:data.success?"success":"error"})
             resetForm();

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const resourceAvailabilitySchema = new mongoose.Schema({
   name: {
     type: String,
@@ -10,50 +11,23 @@ const resourceAvailabilitySchema = new mongoose.Schema({
   },
   reserveTimeInterval: {
     type: Number,
-    default: 30,
-  },
-  availableTime: {
-    type: [
-      {
-        day: {
-          type: String,
-          required: true,
-        },
-        startTime: {
-          type: String,
-          required: true,
-        },
-        endTime: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
-    default: [
-      {
-        day: 'All days',
-        startTime: '00:00',
-        endTime: '23:59',
-      },
-    ],
-    validate: {
-      validator: (array) => array.every((item) => 'day' in item && 'startTime' in item && 'endTime' in item),
-      message: 'Each element in availableTime array should have day, start, and end properties.',
-    },
+    required: true,
   },
   maxReserveTime: {
     type: Number,
-    default: 60,
-    min: [1, 'maxReserveTime must be at least 1'],
+    required: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  availability: {
+    type: mongoose.Schema.Types.Mixed, // Use mixed type for availability
+    required: true,
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users',
-
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
   updatedAt: {
     type: Date,
@@ -61,14 +35,6 @@ const resourceAvailabilitySchema = new mongoose.Schema({
   },
 });
 
-// resourceAvailabilitySchema.virtual('formattedAvailableTime').get(function () {
-//   return this.availableTime.map((slot) => `${slot.day}: ${slot.startTime} - ${slot.endTime}`);
-// });
+const ResourceAvailabilityPolicy = mongoose.model('ResourceAvailabilityPolicy', resourceAvailabilitySchema);
 
-// // Enable virtuals when converting to JSON or Object
-// resourceAvailabilitySchema.set('toObject', { virtuals: true });
-// resourceAvailabilitySchema.set('toJSON', { virtuals: true });
-
-const Resource = mongoose.model('ResourceAvailabilityPolicy', resourceAvailabilitySchema);
-
-module.exports = Resource;
+module.exports = ResourceAvailabilityPolicy;

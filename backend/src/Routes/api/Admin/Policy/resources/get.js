@@ -6,6 +6,7 @@ const get=async(req,res)=>{
         const resources=await ResourceAvailabilityPolicy.find().populate({path:'createdBy',select:'name email'});
         return responseHandler.handleSuccessObject(res,resources,200);
     }catch(err){
+        console.log(err);
         return responseHandler.handleErrorResponse(res,500,'Internal server error');
     }
 }

@@ -4,7 +4,7 @@ const parameters = {
     name: 'string',
     reserveTimeInterval: 'number',
     maxReserveTime: 'number',
-    availableTime: 'array',
+    availability: 'object',
   };
 
 router.post('/create',checkParameters(parameters), require('./create'));

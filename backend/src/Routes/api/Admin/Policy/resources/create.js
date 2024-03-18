@@ -10,7 +10,7 @@ const create= async (req, res) => {
         name,
         description,
         reserveTimeInterval,
-        availableTime,
+        availability,
         maxReserveTime,
       } = req.body;
       console.log('req.body',req.body);
@@ -20,12 +20,15 @@ const create= async (req, res) => {
       if (existingResource) {
         return responseHandler.handleErrorResponse(res, 409, 'Resource already exists');
       }
-  
+      const availabilityKeys = Object.keys(availability);
+      if ('0' in availability && availabilityKeys.length !== 1) {
+        return responseHandler.handleErrorResponse(res, 400, 'Invalid availability');
+      }
       const newResourcePolicy = new ResourceAvailabilityPolicy({
         name,
         description,
         reserveTimeInterval,
-        availableTime,
+        availability,
         maxReserveTime,
         createdBy:user._id,
       });
