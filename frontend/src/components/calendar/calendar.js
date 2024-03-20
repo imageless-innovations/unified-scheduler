@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TextField } from "@mui/material";
 import './calendar.css';
 const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const Calendar = ({resources}) => {
+const Calendar = ({resources,HandleReservation,Reservation}) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedResource, setSelectedResource] = useState(null);
   const [selectedHours, setSelectedHours] = useState({});
@@ -21,7 +21,6 @@ const Calendar = ({resources}) => {
     const updatedHours = { ...selectedHours };
     if(updatedHours[resourceName][hour]===0) return alert('This slot is already booked');
     if(updatedHours[resourceName][hour]===-1) return alert('This slot is Not available for booking');
-    console.log("uupupu=",updatedHours[resourceName][hour],resourceName);
     if (updatedHours[resourceName][hour] === 2) {
       updatedHours[resourceName][hour] = 1;
     } else {
@@ -35,7 +34,6 @@ const Calendar = ({resources}) => {
     const endTime = parseInt(end.split(':')[0]);
   
     hour = parseInt(hour);
-  console.log("hour",hour,start,end,startTime,endTime);
     if (endTime === 0 && hour === 0) {
       return 1; // Special case: midnight is considered within the range
     }
@@ -46,46 +44,75 @@ const Calendar = ({resources}) => {
       return -1; // Hour is not within the range
     }
   }
-
-
-  useEffect(() => {
-   if(resources){
+  const CalendarView = () => { 
     const ReservationsData = {};
     resources.map((resource) => {
       const resourceData = [];
       for (let i = 1; i <= totalHours; i++) {
         const date= new Date(selectedDate);
         date.setHours(i);
-        const weekDay = date.getDay();
+        const weekDay = date.getDay()+1;
         const availability = resource.resourceavailabilityID?.availability
-        console.log("availability",availability);
-        if('0' in availability && Object.keys(availability).length===1){
-          const weekDayAvailability = availability[weekDay]
-          console.log("weekDayAvailability",weekDayAvailability);
+        if('0' in availability){
+          const weekDayAvailability = availability[0]
           if (weekDayAvailability) {
           const hour=isHourInRange(i, weekDayAvailability.start, weekDayAvailability.end);
-          console.log("hour",hour);
           resourceData.push(hour);
           }
         }
-        else{
-          if(availability[weekDay]===0){
+        else if (weekDay in availability) {
+            const weekDayAvailability = availability[weekDay]
+            if (weekDayAvailability) {
+            const hour=isHourInRange(i, weekDayAvailability.start, weekDayAvailability.end);
+            resourceData.push(hour);
+            }
+          }
+          else{
             resourceData.push(-1);
-            continue;
           }
         }
-    
-      }
       ReservationsData[resource.name] = resourceData;
     });
     setSelectedHours(ReservationsData);
-    console.log(ReservationsData);
+  }
+
+  useEffect(() => {
+   if(resources){
+    CalendarView();
    }
-  }, [resources]);
+  }, [resources,selectedDate]);
 
 
+useEffect(() => {
+  console.log(selectedResource);
+  const reservationData = {
+    resourceName: selectedResource,
+    date: selectedDate,
+    startTime: null,
+    endTime: null,
+    duration: null,
+  };
+  if(selectedHours[selectedResource]!==undefined){ 
+  const hours = selectedHours[selectedResource];
+  let start = null;
+  let end = null;
+  for (let i = 0; i < hours.length; i++) {
+    if (hours[i] === 2) {
+      if (start === null) {
+        start = i;
+      }
+      end = i;
+    }
+  }
+  if (start !== null && end !== null) {
+    reservationData.startTime = `${start}:00`;
+    reservationData.endTime = `${end+1}:00`;
+    reservationData.duration = `${end+1 - start} hours`;
 
-
+  }
+}
+  HandleReservation(reservationData);
+}, [selectedResource,selectedHours]);
   return (
     <div className='p-4 my-2 border border-gray-400'>
       <div className='flex  justify-between'>
@@ -108,23 +135,8 @@ const Calendar = ({resources}) => {
             <div className='occupied p-2 text-white'>Booked</div>
             <div className='selected p-2 text-white'>Selected</div>
             <div className='available p-2 text-white'>Available</div>
-
-
           </div>
         </div>
-        {selectedResource && selectedHours[selectedResource]?.length > 0 && (
-          <div className='border border-gray-300 w-1/4 p-2'>
-            <div>
-              <h1>Book Resource </h1>
-              <h2>{selectedResource}</h2>
-            </div>
-            <div>
-              <div>Date: {selectedHours[selectedResource]?.[0]}Hour</div>
-              <div>Time: {selectedHours[selectedResource]?.slice(-1)[0]}Hour</div>
-              <button>Book</button>
-            </div>
-          </div>
-        )}
       </div>
       <table className="booking-table">
         <thead>
