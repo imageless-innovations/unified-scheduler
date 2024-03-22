@@ -1,6 +1,6 @@
 import React from 'react'
 
-function ReservationModal({title,description,reservation}) {
+function ReservationModal({title,description,reservation,HandleCreateReserv}) {
   return (
     <div className='absolute right-10 bottom-10 w-80 '>
         {
@@ -27,7 +27,7 @@ function ReservationModal({title,description,reservation}) {
                     <h3>Duration</h3>
                     <p>{reservation.duration}</p>
                     </div>
-                    <button className="bg-blue-500 text-white px-4 py-2 mt-4 rounded-lg">Reserve</button>
+                    <button className="bg-blue-500 text-white px-4 py-2 mt-4 rounded-lg" onClick={HandleCreateReserv} disabled={reservation.resourceName===null || reservation.startTime===null || reservation.endTime===null}>Reserve</button>
             </div>
             
         }

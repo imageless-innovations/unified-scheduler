@@ -9,21 +9,24 @@ const getTokenFromHeaders = (req) => {
 
   return null
 }
-
-const authenticateToken = (req, res, next) => {
+const verifyToken = (req,res) => {
   const token = getTokenFromHeaders(req)
   if (!token) {
     return responseHandler.handleErrorResponse(res, 401, 'Bearer-Token is missing');
   }
-  try{
   const decode=jwt.verify(token, process.env.JWT_SECRET,{ algorithm: 'HS256'})
+    return decode;
+  }
+
+const authenticateToken = (req, res, next) => {
+  try{
+  const decode =verifyToken(req,res);
   req.user = decode.user;
   next();
   }
   catch(err){
     return responseHandler.handleErrorResponse(res, 401, 'Invalid Token');
   }
-
 };
 
 const adminAuthenticateToken = (req, res, next) => {
@@ -38,4 +41,5 @@ const adminAuthenticateToken = (req, res, next) => {
 module.exports = {
   authenticateToken,
   adminAuthenticateToken,
+  verifyToken
 };

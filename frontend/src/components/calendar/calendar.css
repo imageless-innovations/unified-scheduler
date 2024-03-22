@@ -23,16 +23,23 @@
   /* Example styling for occupied and available cells */
   .occupied {
     background-color: #ff6961; /* Light red */
+    color:var(--text-color)
   }
   
   .available {
-    background-color: #77dd77; /* Light green */
+    background-color: var(--secondary-color); /* Light green */
+    color:var(--text-color)
+
   }
   .selected {
     background-color: #2172e3; /* Light green */
+    color:var(--text-color)
+
   }
   .notAvailable {
     background-color: #66656558; /* Light green */
+    color:var(--text-color)
+
   }
 
   button{

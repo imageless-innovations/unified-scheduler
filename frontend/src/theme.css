@@ -1,15 +1,16 @@
 /* theme.css */
 :root {
-    --primary-color: #3498db;
-    --secondary-color: #2ecc71;
-    --text-color: #0000007e;
+    --primary-color: #2172e3;
+    --secondary-color: #34db58;
+    --text-color: #000000ce;
     --background-color: #f0f0f0;
     --button-color: rgb(165, 163, 163);
-  
+    --button-disabled-color: rgb(165, 163, 163);
     --font-family: 'Arial', sans-serif;
     --font-size-h1: 4rem;
+    --font-size-h2: 3rem;
     --font-size-paragraph: 1rem;
-  
+    --font-size-button: 1rem;
     --font-weight-bold: 700;
     --font-weight-normal: 400;
   
@@ -28,7 +29,11 @@
     color: var(--primary-color);
     font-weight: var(--font-weight-bold);
   }
-  
+  h2 {
+    font-size: var(--font-size-h2);
+    color: var(--primary-color);
+    font-weight: var(--font-weight-bold);
+  }
   p {
     font-size: var(--font-size-paragraph);
     color: var(--text-color);
@@ -40,5 +45,15 @@
     padding: 10px 15px;
     border: none;
     cursor: pointer;
+    font-size: var(--font-size-button);
+
+  }
+  button:disabled {
+    background-color: var(--button-disabled-color);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: not-allowed;
+    font-size: var(--font-size-button);
   }
   
